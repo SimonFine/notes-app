@@ -1,0 +1,42 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.header {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.filter-element {
+    border: black solid;
+
+}
+
+.chip:link,
+.chip:visited {
+    text-decoration: none;
+    font-size: 2rem;
+    vertical-align: middle;  /* Align with the input text */
+    line-height: 2rem;  /* Ensure consistent line-height */
+    padding: 0.5rem;
+}
+
+input[type="text"] {
+    font-size: 2rem;
+    vertical-align: middle;  /* Align with links */
+    padding: 0.5rem;
+    line-height: 2rem;  /* Ensure consistent line-height */
+}
