@@ -1,0 +1,48 @@
+<div class="note-input">
+    <textarea id="note-content" placeholder="Write your note here..."></textarea>
+    <button id="save-note">Save Note</button>
+</div>
+<div class="notes" id="notes-container">
+    <!-- Notes will be displayed here -->
+</div>
+
+<script>
+document.getElementById("save-note").addEventListener("click", function() {
+    let content = document.getElementById("note-content").value;
+    if (content.trim() === "") {
+        alert("Note cannot be empty!");
+        return;
+    }
+
+    fetch("save_note.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "content=" + encodeURIComponent(content),
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("note-content").value = "";
+        loadNotes(); // Reload notes
+    });
+});
+
+function loadNotes() {
+    fetch("get_notes.php")
+    .then(response => response.json())
+    .then(data => {
+        let notesContainer = document.getElementById("notes-container");
+        notesContainer.innerHTML = "";
+        data.forEach(note => {
+            let noteDiv = document.createElement("div");
+            noteDiv.className = "note";
+            noteDiv.innerHTML = `<p>${note.content}</p><small>${note.created_at}</small>`;
+            notesContainer.appendChild(noteDiv);
+        });
+    });
+}
+
+// Load notes when page loads
+window.onload = loadNotes;
+</script>
