@@ -16,10 +16,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($content)) {
         $stmt = $conn->prepare("INSERT INTO notes (content) VALUES (?)");
         $stmt->bind_param("s", $content);
-        $stmt->execute();
+        if ($stmt->execute()) {
+            echo json_encode(["message" => "Note saved successfully!"]);
+        } else {
+            echo json_encode(["error" => "Failed to save note."]);
+        }
+
         $stmt->close();
-    }
+        } 
+    else {
+        echo json_encode(["error" => "Content cannot be empty."]);
+        }
 }
+    
+
 
 $conn->close();
 ?>

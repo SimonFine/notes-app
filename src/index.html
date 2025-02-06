@@ -3,7 +3,7 @@
     <button id="save-note">Save Note</button>
 </div>
 <div class="notes" id="notes-container">
-    <!-- Notes will be displayed here -->
+    
 </div>
 
 <script>
@@ -24,8 +24,11 @@ document.getElementById("save-note").addEventListener("click", function() {
     .then(response => response.json())
     .then(data => {
         document.getElementById("note-content").value = "";
-        loadNotes(); // Reload notes
-    });
+        loadNotes();
+    })
+    .catch(error => console.error('Error:', error));
+    
+    
 });
 
 function loadNotes() {
@@ -40,9 +43,10 @@ function loadNotes() {
             noteDiv.innerHTML = `<p>${note.content}</p><small>${note.created_at}</small>`;
             notesContainer.appendChild(noteDiv);
         });
-    });
+    })
+    .catch(error => console.error('Error:', error));
 }
 
-// Load notes when page loads
+
 window.onload = loadNotes;
 </script>
