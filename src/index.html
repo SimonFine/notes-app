@@ -47,23 +47,56 @@
     });
     
     function loadNotes() {
-        fetch("get_notes.php")
+    fetch("get_notes.php")
+    .then(response => response.json())
+    .then(data => {
+        let notesContainer = document.getElementById("notes-container");
+        notesContainer.innerHTML = "";
+        data.forEach(note => {
+            let noteDiv = document.createElement("div");
+            noteDiv.className = "note";
+            noteDiv.innerHTML = `
+                <p>${note.content}</p>
+                <small>${note.created_at}</small>
+                <button class="delete-note" data-id="${note.id}">Delete</button>
+            `;
+            notesContainer.appendChild(noteDiv);
+            
+        });
+
+        document.querySelectorAll(".delete-note").forEach(button => {
+            button.addEventListener("click", function() {
+                let noteId = this.getAttribute("data-id");
+                deleteNote(noteId);
+                location.reload();  
+            });
+        });
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+    function deleteNote(noteId) {  
+        fetch("delete_notes.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "id=" + encodeURIComponent(noteId), 
+        })
         .then(response => response.json())
         .then(data => {
-            let notesContainer = document.getElementById("notes-container");
-            notesContainer.innerHTML = "";
-            data.forEach(note => {
-                let noteDiv = document.createElement("div");
-                noteDiv.className = "note";
-                noteDiv.innerHTML = `<p>${note.content}</p><small>${note.created_at}</small>`;
-                notesContainer.appendChild(noteDiv);
-            });
+            if (data.message) {
+                
+                loadNotes(); 
+                
+            } else {
+                alert(data.error); 
+            }
         })
         .catch(error => console.error('Error:', error));
-    }
-    
-    
-    window.onload = loadNotes;
+}
+
+window.onload = loadNotes;
     </script>
 </body>
 </html>
