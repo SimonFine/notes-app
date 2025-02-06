@@ -1,52 +1,69 @@
-<div class="note-input">
-    <textarea id="note-content" placeholder="Write your note here..."></textarea>
-    <button id="save-note">Save Note</button>
-</div>
-<div class="notes" id="notes-container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <title>Notes App</title>
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-text">Quick Notes</h1>
+    </header>
+    <section>
+        <div class="note-input">
+            <textarea id="note-content" placeholder="Write your note here..."></textarea>
+            <button id="save-note">Save Note</button>
+        </div>
+        <div class="notes" id="notes-container">
+            
+        </div>
+    </section>
     
-</div>
-
-<script>
-document.getElementById("save-note").addEventListener("click", function() {
-    let content = document.getElementById("note-content").value;
-    if (content.trim() === "") {
-        alert("Note cannot be empty!");
-        return;
+    <script>
+    document.getElementById("save-note").addEventListener("click", function() {
+        let content = document.getElementById("note-content").value;
+        if (content.trim() === "") {
+            alert("Note cannot be empty!");
+            return;
+        }
+    
+        fetch("save_note.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "content=" + encodeURIComponent(content),
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("note-content").value = "";
+            loadNotes();
+        })
+        .catch(error => console.error('Error:', error));
+        
+        
+    });
+    
+    function loadNotes() {
+        fetch("get_notes.php")
+        .then(response => response.json())
+        .then(data => {
+            let notesContainer = document.getElementById("notes-container");
+            notesContainer.innerHTML = "";
+            data.forEach(note => {
+                let noteDiv = document.createElement("div");
+                noteDiv.className = "note";
+                noteDiv.innerHTML = `<p>${note.content}</p><small>${note.created_at}</small>`;
+                notesContainer.appendChild(noteDiv);
+            });
+        })
+        .catch(error => console.error('Error:', error));
     }
-
-    fetch("save_note.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: "content=" + encodeURIComponent(content),
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("note-content").value = "";
-        loadNotes();
-    })
-    .catch(error => console.error('Error:', error));
     
     
-});
-
-function loadNotes() {
-    fetch("get_notes.php")
-    .then(response => response.json())
-    .then(data => {
-        let notesContainer = document.getElementById("notes-container");
-        notesContainer.innerHTML = "";
-        data.forEach(note => {
-            let noteDiv = document.createElement("div");
-            noteDiv.className = "note";
-            noteDiv.innerHTML = `<p>${note.content}</p><small>${note.created_at}</small>`;
-            notesContainer.appendChild(noteDiv);
-        });
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-
-window.onload = loadNotes;
-</script>
+    window.onload = loadNotes;
+    </script>
+</body>
+</html>
