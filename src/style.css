@@ -12,15 +12,119 @@ html {
 }
 
 body {
-    padding: 2rem;
+    padding: 10rem;
     font-family: 'Nunito', sans-serif;
+
 }
 
 .header {
     text-align: center;
     font-size: 2rem;
+    margin: 5rem;
+    color: #5b7c5d;
 }
 
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
 #note-content {
+    all: unset;
+    width: 50%;
+    height: 10rem;
+    padding: 1rem;
     font-family: inherit;
+    font-size: 1.5rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border: 1px solid #86a789;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: all .1s;
+    resize: none;
+    margin-bottom: 2rem;
+}
+
+#note-content:focus {
+    outline: none;
+    box-shadow: 0 1rem 2rem rgba(#000, .1);
+    border-bottom: 3px solid #86a789;
+    background-color: #e6f3e7;
+}
+
+#save-note {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 4rem;
+    display: inline-block;
+    border-radius: 5rem;
+    transition: all .2s;
+    border: none;
+    margin-bottom: 5rem;
+    background-color: #86a789;
+}
+
+#save-note:hover {
+    cursor: pointer;
+    transform: translateY(-.3rem);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.notes {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.note {
+    font-size: 1.6rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border: 1px solid #a286a7;
+    padding: 1rem;
+    margin: 2rem;
+    max-width: 20rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: all .2s;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.note > small,
+.note > button {
+    margin-top: auto;
+    margin: .5rem;
+}
+
+.note > small {
+    margin-top: 4rem;
+}
+
+.note > button {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: .5rem 2rem;
+    display: inline-block;
+    border-radius: 3rem;
+    transition: all .2s;
+    border: none;
+    background-color: #a286a7;
+}
+
+.note > button:hover {
+    cursor: pointer;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.note:hover {
+    outline: none;
+    box-shadow: 0 1rem 2rem rgba(#000, .1);
+    border-bottom: 3px solid #a286a7;
+    background-color: #f2e6f3;
+    transform: translateY(-.3rem);
 }
